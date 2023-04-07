@@ -1,0 +1,18 @@
+{
+  "Comment": "Creating Alias resource record sets in Route S3",
+  "Changes": [
+    {
+      "Action": "UPSERT",
+      "ResourceRecordSet": {
+        "Name": "bean-emporium.cetystijuana.com",
+        "Type": "CNAME",
+        "TTL": 3,
+        "ResourceRecords": [
+          {
+            "Value": "bean-emporium.cetystijuana.com.s3-website-us-east-1.amazonaws.com"
+          }
+        ]
+      }
+    }
+  ]
+}
