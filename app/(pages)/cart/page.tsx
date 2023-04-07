@@ -1,10 +1,7 @@
+"use client"; // this is a client component
+
 // Local styles
 import styles from "./styles.module.css";
-
-// Metadata
-export const metadata = {
-  title: "Bean emporium | Cart",
-};
 
 // Main React component
 const Cart = () => {
