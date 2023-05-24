@@ -14,19 +14,17 @@ export type Product = {
   id: string;
   name: string;
   description: string;
-  variants: {
-    name: string;
-    priceRanges: [
-      {
-        minQuantity: number;
-        maxQuantity: number;
-        price: number;
-      }
-    ];
-    imgUrl: string;
-  }[];
-  stock: number;
   minPerPurchase: number;
+  variants: {
+    id: string;
+    name: string;
+    stock: number;
+    priceRanges: {
+      minQuantity: number;
+      maxQuantity: number;
+      price: number;
+    }[];
+  }[];
 };
 
 export type Order = {
