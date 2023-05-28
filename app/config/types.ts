@@ -24,6 +24,7 @@ export type Product = {
       maxQuantity: number;
       price: number;
     }[];
+    imgUrl: string;
   }[];
 };
 
