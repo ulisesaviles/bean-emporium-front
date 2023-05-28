@@ -46,7 +46,7 @@ const getProduct = async (productId: string): Promise<Product | undefined> => {
 const getProducts = async (
   pageSize: number,
   LastEvaluatedKey?: string
-): Promise<{ products: Product[]; LastEvaluatedKey: string }> => {
+): Promise<{ products: Product[]; LastEvaluatedKey?: string }> => {
   let params: { pageSize: string; LastEvaluatedKey?: string } = {
     pageSize: pageSize.toString(),
   };
@@ -55,9 +55,12 @@ const getProducts = async (
     await baseRequest("GET", `products`, params)
   ).data as {
     products: Product[];
-    LastEvaluatedKey: { id: string };
+    LastEvaluatedKey?: { id: string };
   };
-  return { products, LastEvaluatedKey: newLastEvaluatedKey.id };
+  return {
+    products,
+    LastEvaluatedKey: newLastEvaluatedKey ? newLastEvaluatedKey.id : undefined,
+  };
 };
 
 /**
