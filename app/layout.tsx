@@ -1,4 +1,4 @@
-import "./globals.css";
+import "./globals.scss";
 
 export const metadata = {
   description: "Bean emporium",
@@ -9,6 +9,7 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
+
   return (
     <html lang="en">
       <body>{children}</body>
