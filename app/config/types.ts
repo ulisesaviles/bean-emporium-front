@@ -10,22 +10,24 @@ export type User = {
   cart: Cart;
 };
 
+export type ProductVariant = {
+  id: string;
+  name: string;
+  stock: number;
+  priceRanges: {
+    minQuantity: number;
+    maxQuantity: number;
+    price: number;
+  }[];
+  imgUrl: string;
+};
+
 export type Product = {
   id: string;
   name: string;
   description: string;
   minPerPurchase: number;
-  variants: {
-    id: string;
-    name: string;
-    stock: number;
-    priceRanges: {
-      minQuantity: number;
-      maxQuantity: number;
-      price: number;
-    }[];
-    imgUrl: string;
-  }[];
+  variants: ProductVariant[];
 };
 
 export type Order = {
