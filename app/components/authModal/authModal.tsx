@@ -56,9 +56,9 @@ export const AuthModal = ({visible = true}: ModalProps) => {
               :
               currentPage === MODAL_PAGES.LOGIN
               ?
-              <Login />
+              <Login onClickSignup={() => setCurrentPage(MODAL_PAGES.SIGNUP)}/>
               :
-              <Signup />
+              <Signup onClickLogin={() => setCurrentPage(MODAL_PAGES.LOGIN)}/>
             }
           </div>
           <div className={styles.overlay} onClick={() => setShow(false)}></div>

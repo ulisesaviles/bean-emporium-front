@@ -70,7 +70,7 @@ const Home = () => {
         <title>Bean emporium</title>
         <meta name="description" content="bean emporium" />
       </Head>
-      <AuthModal visible={false} />
+      <AuthModal visible={true} />
       <main className={styles.main}>
         <header className={styles.header}>
           <h3 className={styles.logo}>Bean Emporium</h3>
