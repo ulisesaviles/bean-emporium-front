@@ -114,11 +114,11 @@ const Product = () => {
         <IoCart className={styles.cart} onClick={() => {}} />
       </header>
       <section
-        className={`${
+        className={
           !productId || !product
             ? styles.productSectionEmpty
             : styles.productSection
-        }`}
+        }
       >
         {!productId || product === undefined || !selectedVariant ? (
           "Loading..."
