@@ -1,8 +1,12 @@
 @import '../../styles/variables.scss';
 
 .wrapper {
+  p {
+    margin-bottom: 0.5rem;
+    font-weight: bold;
+  }
   .input {
-    width: 40vw;
+    width: 100%;
     background-color: $contrast;
     border: 0;
     padding: 1rem;
@@ -11,7 +15,17 @@
 
     &:focus {
       border: 0;
-      outline: 2px solid $fade1
+      outline: 2px solid $fade1;
+    }
+
+    &.disabled {
+      cursor: not-allowed;
+      background-color: $fade1;
+
+      &:focus {
+        border: 0;
+        outline: none;
+      }
     }
   }
 }

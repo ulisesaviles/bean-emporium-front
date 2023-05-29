@@ -6,12 +6,15 @@
   left: 50%;
   transform: translate(-50%, -50%);
   padding: 2rem;
-  background-color: black;
-  border-radius: 0.2rem;
-  width: 50vw;
-  height: 35vh;
+  background-color: $background;
+  border-radius: 0.3rem;
+  min-width: 40vw;
+  max-width: 80vw;
   z-index: 100;
   box-shadow: $shadow-strong;
+  max-height: 80vh;
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 
 .overlay {

@@ -37,7 +37,7 @@ const Home = () => {
   >();
   const [firstLoad, setFirstLoad] = useState(true);
   const [pageSize, setPageSize] = useState<5 | 10 | 20>(10);
-  const [search, searchInput]: [string, JSX.Element] = useInput({placeholder: 'Enter a product name...'});
+  const [search, searchInput]: [string, JSX.Element] = useInput({placeholder: 'Enter a product name...', disabled: true});
 
   // Functions
   const getData = async (lastEvaluatedKey?: string) => {
@@ -66,7 +66,7 @@ const Home = () => {
         <title>Bean emporium</title>
         <meta name="description" content="bean emporium" />
       </Head>
-      <AuthModal visible={false} />
+      <AuthModal visible={true} />
       <main className={styles.main}>
         <header className={styles.header}>
           <h3 className={styles.logo}>Bean Emporium</h3>

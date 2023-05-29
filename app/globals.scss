@@ -1,6 +1,8 @@
+@import './styles/variables.scss';
+
 :root {
   /* Variables */
-  --font-primary: rgb(50, 50, 50);
+  --font-primary: $title;
 }
 
 * {
@@ -26,5 +28,11 @@ a {
 p,
 span,
 a {
-  color: rgb(50, 50, 50);
+  color: $title;
+}
+
+.header {
+  font-size: 2rem;
+  font-weight: bold;
+  color: $title;
 }
