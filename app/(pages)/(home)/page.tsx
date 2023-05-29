@@ -60,7 +60,7 @@ const Home = () => {
   // On reload
   useEffect(() => {
     if (firstLoad) getData(lastEvaluatedKey);
-  }, []);
+  }, [firstLoad, getData, lastEvaluatedKey]);
 
   // JSX
   return (

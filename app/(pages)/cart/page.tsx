@@ -10,18 +10,21 @@ import { LC_KEYS } from "@/app/config/types";
 const Cart = () => {
   const [modalVisible, setVisible] = useState(false);
   const [firstLoad, setFirstLoad] = useState(true);
-  const [userId, setUserId] = useState(localStorage.getItem(LC_KEYS.USER_ID));
-  const [token, setToken] = useState(localStorage.getItem(LC_KEYS.SESSION_TOKEN));
+  const [userId, setUserId] = useState<string | null>();
+  const [token, setToken] = useState<string | null>();
 
   useEffect(() => {
     if (firstLoad) {
       setFirstLoad(false);
       handleFirstLoad();
     }
-
-  }, []);
+  }, [firstLoad]);
 
   const handleFirstLoad = () => {
+    const userId = localStorage.getItem(LC_KEYS.USER_ID);
+    setUserId(userId);
+    const token = localStorage.getItem(LC_KEYS.SESSION_TOKEN);
+    setToken(token);
     if (!userId || !token) {
       setVisible(true);
     }
@@ -31,13 +34,13 @@ const Cart = () => {
     setVisible(false);
     setUserId(userId);
     setToken(token);
-  }
+  };
   return (
     <main className={styles.main}>
       <p>Cart</p>
       <p>{userId}</p>
       <p>{token}</p>
-      <AuthModal visible={modalVisible} onSuccessfulLogin={handleLogin}/>
+      <AuthModal visible={modalVisible} onSuccessfulLogin={handleLogin} />
     </main>
   );
 };

@@ -1,12 +1,12 @@
-import { useEffect, useState } from 'react';
-import styles from './styles.module.scss';
-import { useInput } from '../../input/input';
-import { Button } from '../../button/button';
-import { SignupForm } from '@/app/config/types';
-import { validateSignupForm } from '@/app/helpers/auth.helper';
-import { IoMdCloseCircleOutline } from 'react-icons/io'
-import Link from 'next/link';
-import { signup } from '@/api/auth';
+import { useEffect, useState } from "react";
+import styles from "./styles.module.scss";
+import { useInput } from "../../input/input";
+import { Button } from "../../button/button";
+import { SignupForm } from "@/app/config/types";
+import { validateSignupForm } from "@/app/helpers/auth.helper";
+import { IoMdCloseCircleOutline } from "react-icons/io";
+import Link from "next/link";
+import { signup } from "@/api/auth";
 
 interface SignupProps {
   onClickLogin: any;
@@ -14,32 +14,54 @@ interface SignupProps {
   onFailSignup: any;
 }
 
-export const Signup = ({onClickLogin, onSuccessfulSignup, onFailSignup}: SignupProps) => {
+export const Signup = ({
+  onClickLogin,
+  onSuccessfulSignup,
+  onFailSignup,
+}: SignupProps) => {
   const [name, nameInput]: [string, JSX.Element] = useInput({
-    label: 'Name', placeholder: 'i.e John Doe', required: true,
-    onChange: (newValue: string) => { setForm({...form, name: newValue}) }
+    label: "Name",
+    placeholder: "i.e John Doe",
+    required: true,
+    onChange: (newValue: string) => {
+      setForm({ ...form, name: newValue });
+    },
   });
   const [email, emailInput]: [string, JSX.Element] = useInput({
-    label: 'Email', placeholder: 'example@gmail.com', required: true,
-    onChange: (newValue: string) => { setForm({...form, email: newValue}) }
+    label: "Email",
+    placeholder: "example@gmail.com",
+    required: true,
+    onChange: (newValue: string) => {
+      setForm({ ...form, email: newValue });
+    },
   });
   const [password, passwordInput]: [string, JSX.Element] = useInput({
-    label: 'Password', type: 'password', required: true,
-    onChange: (newValue: string) => { setForm({...form, password: newValue}) }
+    label: "Password",
+    type: "password",
+    required: true,
+    onChange: (newValue: string) => {
+      setForm({ ...form, password: newValue });
+    },
   });
-  const [confirmPassword, confirmPasswordInput]: [string, JSX.Element] = useInput({
-    label: 'Confirm Password', type: 'password', required: true,
-    onChange: (newValue: string) => { setForm({...form, confirmPassword: newValue}) }
+  const [confirmPassword, confirmPasswordInput]: [string, JSX.Element] =
+    useInput({
+      label: "Confirm Password",
+      type: "password",
+      required: true,
+      onChange: (newValue: string) => {
+        setForm({ ...form, confirmPassword: newValue });
+      },
+    });
+  const [form, setForm]: [SignupForm, any] = useState({
+    name,
+    email,
+    password,
+    confirmPassword,
   });
-  const [form, setForm]:[SignupForm, any] = useState({name, email, password, confirmPassword});
   const [errors, setErrors]: [string[], any] = useState([]);
   const [disabled, setDisabled] = useState(true);
   const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
-    handleFormChange();
-  }, [form, name, email, password, confirmPassword])
-  
   const handleFormChange = () => {
     const err = validateSignupForm(form);
     setErrors(err);
@@ -47,7 +69,7 @@ export const Signup = ({onClickLogin, onSuccessfulSignup, onFailSignup}: SignupP
     if (err.length === 0) {
       setDisabled(false);
     }
-  }
+  };
 
   const handleSignUp = async () => {
     try {
@@ -58,40 +80,48 @@ export const Signup = ({onClickLogin, onSuccessfulSignup, onFailSignup}: SignupP
           onSuccessfulSignup(user);
         }
       }
-    }
-    catch(error) {
+    } catch (error) {
       console.log(error);
       onFailSignup();
     }
     setLoading(false);
-  }
+  };
 
-  return(
+  useEffect(() => {
+    handleFormChange();
+  }, [form, name, email, password, confirmPassword, handleFormChange]);
+
+  return (
     <div className={styles.signup}>
-      <p className='header'>Sign up</p>
+      <p className="header">Sign up</p>
       {nameInput}
       {emailInput}
       {passwordInput}
       {confirmPasswordInput}
 
-      {
-        errors.length !== 0
-        &&
+      {errors.length !== 0 && (
         <div className={styles.errors}>
-          {
-            errors.map(error => <div className={styles.error}>
+          {errors.map((error, i) => (
+            <div className={styles.error} key={i}>
               <IoMdCloseCircleOutline className={styles.icon} />
               <p>{error}</p>
-            </div>)
-          }
+            </div>
+          ))}
         </div>
-      }
+      )}
 
-      <Button label='Sign up' disabled={disabled} loading={loading} onClick={handleSignUp}/>
-      <Link href={''}>
-        <Button label='Cancelar' onClick={() => {}} type='secondary'/>
+      <Button
+        label="Sign up"
+        disabled={disabled}
+        loading={loading}
+        onClick={handleSignUp}
+      />
+      <Link href={""}>
+        <Button label="Cancelar" onClick={() => {}} type="secondary" />
       </Link>
-      <p className={styles.login} onClick={() => onClickLogin()} >Already have an account? Log in</p>
+      <p className={styles.login} onClick={() => onClickLogin()}>
+        Already have an account? Log in
+      </p>
     </div>
-  )
-}
+  );
+};
