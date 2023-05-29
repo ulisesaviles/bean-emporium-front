@@ -85,7 +85,7 @@ const Home = () => {
             sagittis vitae, ullamcorper eu nisi. Donec sed enim ante. Praesent
             porttitor odio ut lobortis consequat.{" "}
           </p>
-          {searchInput}
+          <div style={{ width: "100%" }}>{searchInput}</div>
         </section>
         <section
           className={`${
