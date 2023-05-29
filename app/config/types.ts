@@ -55,3 +55,8 @@ export type SignupForm = {
   password: string;
   confirmPassword: string;
 }
+
+export enum LC_KEYS {
+  USER_ID = 'userId',
+  SESSION_TOKEN = 'token'
+}

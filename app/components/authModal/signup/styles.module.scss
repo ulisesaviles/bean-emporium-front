@@ -18,6 +18,15 @@
     margin-top: 1rem;
   }
 
+  .errors {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    max-height: 10vh;
+    overflow-y: auto;
+  }
+
   .error {
     display: flex;
     flex-direction: row;

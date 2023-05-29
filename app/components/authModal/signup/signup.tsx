@@ -5,12 +5,16 @@ import { Button } from '../../button/button';
 import { SignupForm } from '@/app/config/types';
 import { validateSignupForm } from '@/app/helpers/auth.helper';
 import { IoMdCloseCircleOutline } from 'react-icons/io'
+import Link from 'next/link';
+import { signup } from '@/api/auth';
 
 interface SignupProps {
   onClickLogin: any;
+  onSuccessfulSignup: any;
+  onFailSignup: any;
 }
 
-export const Signup = ({onClickLogin}: SignupProps) => {
+export const Signup = ({onClickLogin, onSuccessfulSignup, onFailSignup}: SignupProps) => {
   const [name, nameInput]: [string, JSX.Element] = useInput({
     label: 'Name', placeholder: 'i.e John Doe', required: true,
     onChange: (newValue: string) => { setForm({...form, name: newValue}) }
@@ -30,6 +34,7 @@ export const Signup = ({onClickLogin}: SignupProps) => {
   const [form, setForm]:[SignupForm, any] = useState({name, email, password, confirmPassword});
   const [errors, setErrors]: [string[], any] = useState([]);
   const [disabled, setDisabled] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     handleFormChange();
@@ -44,6 +49,23 @@ export const Signup = ({onClickLogin}: SignupProps) => {
     }
   }
 
+  const handleSignUp = async () => {
+    try {
+      setLoading(true);
+      if (errors.length === 0) {
+        const user = await signup(name, email, password);
+        if (onSuccessfulSignup) {
+          onSuccessfulSignup(user);
+        }
+      }
+    }
+    catch(error) {
+      console.log(error);
+      onFailSignup();
+    }
+    setLoading(false);
+  }
+
   return(
     <div className={styles.signup}>
       <p className='header'>Sign up</p>
@@ -55,17 +77,20 @@ export const Signup = ({onClickLogin}: SignupProps) => {
       {
         errors.length !== 0
         &&
-        <>
+        <div className={styles.errors}>
           {
             errors.map(error => <div className={styles.error}>
               <IoMdCloseCircleOutline className={styles.icon} />
               <p>{error}</p>
             </div>)
           }
-        </>
+        </div>
       }
 
-      <Button label='Sign up' disabled={disabled}/>
+      <Button label='Sign up' disabled={disabled} loading={loading} onClick={handleSignUp}/>
+      <Link href={''}>
+        <Button label='Cancelar' onClick={() => {}} type='secondary'/>
+      </Link>
       <p className={styles.login} onClick={() => onClickLogin()} >Already have an account? Log in</p>
     </div>
   )
