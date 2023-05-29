@@ -8,11 +8,12 @@
   padding: 2rem;
   background-color: $background;
   border-radius: 0.3rem;
-  min-width: 40vw;
+  min-width: 50vw;
+  width: 50vw;
   max-width: 80vw;
   z-index: 100;
   box-shadow: $shadow-strong;
-  max-height: 80vh;
+  max-height: 90vh;
   overflow-y: auto;
   overflow-x: hidden;
 }
@@ -25,5 +26,9 @@
   top: 0;
   background: $overlay;
   z-index: 10;
-  cursor: pointer;
+}
+
+.img {
+  width: 40%;
+  background-size: contain;
 }

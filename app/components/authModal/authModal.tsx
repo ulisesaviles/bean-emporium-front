@@ -5,9 +5,12 @@ import { Auth, Hub } from 'aws-amplify';
 import { Amplify } from 'aws-amplify';
 import { Login } from './login/login';
 import { Signup } from './signup/signup';
+import auth_img from '../../assets/img/auth_dialog.png';
 
 interface ModalProps {
   visible: boolean;
+  onSuccessfulLogin?: any;
+  onFailedLogin?: any;
 }
 
 enum MODAL_PAGES {
@@ -32,17 +35,30 @@ Amplify.configure({
   },
 });
 
-export const AuthModal = ({visible = true}: ModalProps) => {
-  const [show, setShow] = useState(visible);
+export const AuthModal = ({visible = false, onSuccessfulLogin, onFailedLogin}: ModalProps) => {
+  // const [show, setShow] = useState(visible);
   const [currentPage, setCurrentPage]: [MODAL_PAGES, any] = useState(MODAL_PAGES.DIALOG)
 
   useEffect(() => {
-  }, [visible, show, currentPage]);
+    console.log(visible);
+  }, [visible, currentPage]);
+
+  const handleSuccess = (userId: string, token: string) => {
+    if (onSuccessfulLogin) {
+      onSuccessfulLogin(userId, token);
+    }
+  }
+
+  const handleFailed = () => {
+    if (onFailedLogin) {
+      onFailedLogin();
+    }
+  }
 
   return(
     <>
       {
-        show
+        visible
         ?
         <>
           <div className={styles.modal}>
@@ -50,18 +66,19 @@ export const AuthModal = ({visible = true}: ModalProps) => {
               currentPage === MODAL_PAGES.DIALOG
               ?
               <>
+                {/* <img src={auth_img} className={styles.img} /> */}
                 <p>In order to get the tastiest coffee beans on the planet, you need to log in first </p>
                 <Button onClick={() => {setCurrentPage(MODAL_PAGES.LOGIN)}} label='Authenticate' />
               </>
               :
               currentPage === MODAL_PAGES.LOGIN
               ?
-              <Login onClickSignup={() => setCurrentPage(MODAL_PAGES.SIGNUP)}/>
+              <Login onClickSignup={() => setCurrentPage(MODAL_PAGES.SIGNUP)} onSuccessfulLogin={handleSuccess} onFailLogin={handleFailed}/>
               :
-              <Signup onClickLogin={() => setCurrentPage(MODAL_PAGES.LOGIN)}/>
+              <Signup onClickLogin={() => setCurrentPage(MODAL_PAGES.LOGIN)} onSuccessfulSignup={() => setCurrentPage(MODAL_PAGES.LOGIN)} onFailSignup={handleFailed}/>
             }
           </div>
-          <div className={styles.overlay} onClick={() => setShow(false)}></div>
+          <div className={styles.overlay}></div>
         </>
         :
         <></>

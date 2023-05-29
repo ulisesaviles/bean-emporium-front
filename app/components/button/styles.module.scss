@@ -19,4 +19,15 @@
     cursor: not-allowed;
     background: rgba($color: $primary, $alpha: 0.6);
   }
+
+  &.secondary {
+    background: $contrast;
+    p {
+      color: black !important;
+    }
+
+    &:active {
+      background: $fade1;
+    }
+  }
 }

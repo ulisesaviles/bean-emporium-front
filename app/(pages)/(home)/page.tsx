@@ -23,7 +23,6 @@ import Image from "next/image";
 import homeAsset from "../../../public/Assets/Home.jpg";
 import Product from "@/app/components/product";
 import Link from "next/link";
-import { AuthModal } from "@/app/components/authModal/authModal";
 import { useInput } from "@/app/components/input/input";
 
 // Main react component
@@ -57,6 +56,7 @@ const Home = () => {
   // On reload
   useEffect(() => {
     if (firstLoad) getData(lastEvaluatedKey);
+
   }, []);
 
   // JSX
@@ -66,11 +66,12 @@ const Home = () => {
         <title>Bean emporium</title>
         <meta name="description" content="bean emporium" />
       </Head>
-      <AuthModal visible={true} />
       <main className={styles.main}>
         <header className={styles.header}>
           <h3 className={styles.logo}>Bean Emporium</h3>
-          <IoCart className={styles.cart} onClick={() => {}} />
+          <Link href={'cart'}>
+            <IoCart className={styles.cart}/>
+          </Link>
         </header>
         <section className={styles.section1Container}>
           <Image src={homeAsset} alt="Coffee" className={styles.section1Img} />
