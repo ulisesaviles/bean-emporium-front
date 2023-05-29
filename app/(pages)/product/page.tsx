@@ -20,7 +20,10 @@ const getId = (searchQuery: string): string | undefined => {
 // Main React component
 const Product = () => {
   const [productId, setProductId] = useState<string | undefined>();
-  useEffect(() => setProductId(getId(window.location.search)), []);
+
+  useEffect(() => {
+    setTimeout(() => setProductId(getId(window.location.search)), 100);
+  }, []);
 
   return (
     <main className={styles.main}>
