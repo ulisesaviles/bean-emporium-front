@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 
 // NextJS imports
 import Head from "next/head";
+import Link from "next/link";
 
 // Import styles
 import styles from "./styles.module.scss";
@@ -21,8 +22,9 @@ import Image from "next/image";
 
 // Assets
 import homeAsset from "../../../public/Assets/Home.jpg";
+
+// Components
 import Product from "@/app/components/product";
-import Link from "next/link";
 import { AuthModal } from "@/app/components/authModal/authModal";
 import { useInput } from "@/app/components/input/input";
 
@@ -37,7 +39,9 @@ const Home = () => {
   >();
   const [firstLoad, setFirstLoad] = useState(true);
   const [pageSize, setPageSize] = useState<5 | 10 | 20>(10);
-  const [search, searchInput]: [string, JSX.Element] = useInput({placeholder: 'Enter a product name...'});
+  const [searchText, searchInput]: [string, JSX.Element] = useInput({
+    placeholder: "Enter a product name...",
+  });
 
   // Functions
   const getData = async (lastEvaluatedKey?: string) => {
