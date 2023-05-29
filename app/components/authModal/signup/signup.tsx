@@ -29,6 +29,7 @@ export const Signup = ({onClickLogin}: SignupProps) => {
   });
   const [form, setForm]:[SignupForm, any] = useState({name, email, password, confirmPassword});
   const [errors, setErrors]: [string[], any] = useState([]);
+  const [disabled, setDisabled] = useState(true);
 
   useEffect(() => {
     handleFormChange();
@@ -36,8 +37,11 @@ export const Signup = ({onClickLogin}: SignupProps) => {
   
   const handleFormChange = () => {
     const err = validateSignupForm(form);
-    console.log(err);
     setErrors(err);
+
+    if (err.length === 0) {
+      setDisabled(false);
+    }
   }
 
   return(
@@ -61,7 +65,7 @@ export const Signup = ({onClickLogin}: SignupProps) => {
         </>
       }
 
-      <Button label='Sign up'/>
+      <Button label='Sign up' disabled={disabled}/>
       <p className={styles.login} onClick={() => onClickLogin()} >Already have an account? Log in</p>
     </div>
   )
