@@ -23,6 +23,8 @@ import Image from "next/image";
 import homeAsset from "../../../public/Assets/Home.jpg";
 import Product from "@/app/components/product";
 import Link from "next/link";
+import { AuthModal } from "@/app/components/authModal/authModal";
+import { useInput } from "@/app/components/input/input";
 
 // Main react component
 const Home = () => {
@@ -35,7 +37,7 @@ const Home = () => {
   >();
   const [firstLoad, setFirstLoad] = useState(true);
   const [pageSize, setPageSize] = useState<5 | 10 | 20>(10);
-  const [inputText, setInputText] = useState("");
+  const [search, searchInput]: [string, JSX.Element] = useInput({placeholder: 'Enter a product name...'});
 
   // Functions
   const getData = async (lastEvaluatedKey?: string) => {
@@ -64,10 +66,11 @@ const Home = () => {
         <title>Bean emporium</title>
         <meta name="description" content="bean emporium" />
       </Head>
+      <AuthModal visible={false} />
       <main className={styles.main}>
         <header className={styles.header}>
           <h3 className={styles.logo}>Bean Emporium</h3>
-          <IoCart className={styles.cart} />
+          <IoCart className={styles.cart} onClick={() => {}} />
         </header>
         <section className={styles.section1Container}>
           <Image src={homeAsset} alt="Coffee" className={styles.section1Img} />
@@ -78,12 +81,7 @@ const Home = () => {
             sagittis vitae, ullamcorper eu nisi. Donec sed enim ante. Praesent
             porttitor odio ut lobortis consequat.{" "}
           </p>
-          <input
-            value={inputText}
-            onChange={(e) => setInputText(e.target.value)}
-            className={styles.section1Input}
-            placeholder="Enter a product name..."
-          />
+          {searchInput}
         </section>
         <section
           className={`${

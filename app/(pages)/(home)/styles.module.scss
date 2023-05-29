@@ -1,7 +1,9 @@
+@import '../../styles/variables.scss';
+
 .main {
   display: flex;
   flex-direction: column;
-  color: rgb(50, 50, 50);
+  color: $title;
   position: relative;
   padding-top: 80px;
 }
@@ -16,8 +18,8 @@
   position: fixed;
   height: 80px;
   top: 0;
-  background-color: white;
-  z-index: 100;
+  background-color: $background;
+  z-index: 2;
 }
 
 .logo {
@@ -26,6 +28,7 @@
 
 .cart {
   font-size: 30px;
+  cursor: pointer;
 }
 
 .section1Container {
@@ -53,7 +56,7 @@
   font-size: 16px;
   line-height: 24px;
   margin-bottom: 50px;
-  color: rgb(100, 100, 100);
+  color: $text
 }
 
 .section1Slogan,
@@ -63,12 +66,12 @@
 
 .section1Input:focus {
   border: 0;
-  outline: 2px solid rgb(220, 220, 220);
+  outline: 2px solid $fade1;
 }
 
 .section1Input {
   width: 40vw;
-  background-color: rgb(240, 240, 240);
+  background-color: $contrast;
   border: 0;
   padding: 8px 20px;
   border-radius: 10px;

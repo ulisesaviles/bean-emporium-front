@@ -1,0 +1,17 @@
+@import '../../styles/variables.scss';
+
+.wrapper {
+  .input {
+    width: 40vw;
+    background-color: $contrast;
+    border: 0;
+    padding: 1rem;
+    border-radius: 10px;
+    font-size: 16px;
+
+    &:focus {
+      border: 0;
+      outline: 2px solid $fade1
+    }
+  }
+}
