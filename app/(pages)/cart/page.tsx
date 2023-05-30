@@ -111,7 +111,7 @@ const Cart = () => {
           :
           <div className={styles.placeholder}>
             <Image src={empty_cart_img} alt="empty_cart" className={styles.img} />
-            <p>You don't have anything on your cart yet </p>
+            <p>You don&apos;t have anything on your cart yet </p>
             <Link href=''>
               <Button label="Start shopping"/>
             </Link>
