@@ -1,0 +1,35 @@
+.container {
+  background-color: rgb(240, 240, 240);
+  border-radius: 5px;
+  padding: 7.5px 10px;
+  font-size: 16px;
+  position: relative;
+}
+
+.arrow {
+  transition: all 200ms;
+}
+
+.rotate {
+  transform: rotate(180deg);
+}
+
+.options {
+  position: absolute;
+  background-color: rgb(240, 240, 240);
+  border-radius: 5px;
+  width: 100%;
+  left: 0;
+  padding: 5px;
+}
+
+.option {
+  transition: all 200ms;
+  padding: 2.5px 5px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.option:hover {
+  background-color: rgb(230, 230, 230);
+}
