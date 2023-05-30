@@ -11,7 +11,7 @@ import { baseRequest } from "./config";
  */
 const createProduct = async (product: Product): Promise<Product> => {
   const { newProduct } = (
-    await baseRequest("POST", `products`, undefined, { product })
+    await baseRequest("POST", `products`, undefined, { product }, true)
   ).data as { newProduct: Product };
   return newProduct;
 };
@@ -22,7 +22,7 @@ const createProduct = async (product: Product): Promise<Product> => {
  * @returns An empty promise.
  */
 const deleteProduct = async (productId: string): Promise<void> => {
-  await baseRequest("DELETE", `products/${productId}`);
+  await baseRequest("DELETE", `products/${productId}`, undefined, undefined, true);
 };
 
 /**
@@ -79,7 +79,7 @@ const updateProduct = async (
   const { product } = (
     await baseRequest("PATCH", `products/${productId}`, undefined, {
       newProductFields,
-    })
+    }, true)
   ).data as { product: Product };
   return product;
 };

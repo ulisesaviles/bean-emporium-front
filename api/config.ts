@@ -1,4 +1,6 @@
 // To perform HTTP requests
+import { LC_KEYS } from "@/app/config/types";
+import { Auth } from "aws-amplify";
 import axios from "axios";
 
 // API configuration
@@ -20,7 +22,8 @@ export const baseRequest = async (
   method: "GET" | "POST" | "PATCH" | "DELETE",
   path: string,
   params?: { [key: string]: string },
-  body?: object
+  body?: object,
+  tokenRequired?: boolean
 ) => {
   // Build params as string in the form of "?param=value&param2=value2"
   let paramsAsStr = "?";
@@ -33,10 +36,23 @@ export const baseRequest = async (
     }
   }
 
-  // Perform base axios operation
-  return await axios({
+  let request: any = {
     method,
     url: `${baseUrl}${path}${params ? paramsAsStr : ""}`,
     data: body,
-  });
+  }
+
+  if (tokenRequired) {
+    const token = localStorage.getItem(LC_KEYS.SESSION_TOKEN);
+    if (token) {
+      request["headers"] = {};
+      request["headers"]["Authorization"] = `Bearer ${(await Auth.currentSession()).getIdToken().getJwtToken()}`;
+    }
+    else {
+      throw new Error('NO token.');
+    }
+  }
+
+  // Perform base axios operation
+  return await axios(request);
 };

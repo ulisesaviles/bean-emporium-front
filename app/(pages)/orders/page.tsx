@@ -94,7 +94,7 @@ const Orders = () => {
               return  (
                 <div className={`${styles.order}`} key={order.id} onClick={() => setCurrentOrder(order)}>
                   <div className={styles.left}>
-                    <Image src={beans} alt="beans" className={styles.img} />
+                    <Image src={order.products[0].variant.imgUrl} alt="beans" className={styles.img} width={15} height={15}/>
                     <div className={styles.information}>
                       <p className={styles.name}>{(new Date(order.timestamp)).toLocaleDateString('en-US', {dateStyle: 'medium'})}</p>
                       <p className={styles.variant}>Products: <b>{order.products.length}</b></p>

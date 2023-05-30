@@ -9,7 +9,7 @@ const getOrders = async (): Promise<Order[]> => {
     const res = isLoggedIn();
     if (res) {
       const {userId, token} = res;
-      const {orders} = (await baseRequest('GET', `orders`, {search: userId})).data;
+      const {orders} = (await baseRequest('GET', `orders`, {search: userId}, undefined, true)).data;
       return orders;
     }
     else {
@@ -28,7 +28,7 @@ const getOrder = async(id: string) => {
     if (res) {
       const {userId, token} = res;
 
-      const {order} = (await baseRequest('GET', `orders/${id}`,)).data;
+      const {order} = (await baseRequest('GET', `orders/${id}`, undefined, undefined, true)).data;
       return order;
     }
   }
@@ -43,8 +43,8 @@ const createOrder = async(order: Order) => {
 
     if (res) {
       const {userId, token} = res;
-
-      const {newOrder} = (await baseRequest('POST', `orders`, undefined, {order})).data;
+      
+      const {newOrder} = (await baseRequest('POST', `orders`, undefined, {order}, true)).data;
       return newOrder;
     }
   }

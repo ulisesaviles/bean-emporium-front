@@ -11,7 +11,7 @@ const getCart = async () => {
     const res = isLoggedIn();
     if (res) {
       const {userId, token} = res;
-      const {cart} = (await baseRequest('GET', `users/${userId}/cart`)).data;
+      const {cart} = (await baseRequest('GET', `users/${userId}/cart`, undefined, undefined, true)).data;
       return cart;
     }
     else {

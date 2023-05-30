@@ -12,6 +12,7 @@ import { AuthModal } from "@/app/components/authModal/authModal";
 import { isLoggedIn } from "@/app/helpers/auth.helper";
 import { getCurrentPriceRange } from "@/app/helpers/product.helper";
 import { ordersAPI } from "@/api/orders";
+import { usersAPI } from "@/api/users";
 
 // Main React component
 const Checkout = () => {
@@ -45,7 +46,8 @@ const Checkout = () => {
         variant: {
           id: prod.variant.id,
           name: prod.variant.name,
-          pricePerUnit: getCurrentPriceRange(parseFloat(prod.quantity), prod.variant)
+          pricePerUnit: getCurrentPriceRange(parseFloat(prod.quantity), prod.variant),
+          imgUrl: prod.variant.imgUrl
         },
         quantity: parseFloat(prod.quantity)
       } as {
@@ -72,7 +74,8 @@ const Checkout = () => {
 
     try {
       const newOrder = await ordersAPI.createOrder(order);
-      console.log(newOrder);
+      const user = await usersAPI.updateUserCart(userId!, []);
+      localStorage.setItem(LC_KEYS.CART, JSON.stringify([]));
     }
     catch(error) {
       console.log(error);

@@ -43,6 +43,7 @@ const Cart = () => {
     else {
       const cart = await cartAPI.getCart();
       setProducts(cart);
+      console.log(cart);
     }
   };
 
@@ -96,7 +97,7 @@ const Cart = () => {
             return  (
               <div className={`${styles.product}`} key={product.id}>
                 <div className={styles.left}>
-                  <Image src={beans} alt="beans" className={styles.img} />
+                  <Image src={product.variant.imgUrl} alt="beans" className={styles.img} width={15} height={15} />
                   <div className={styles.information}>
                     <p className={styles.name}>{product.name}</p>
                     <p className={styles.variant}>Variant: {product.variant.name}</p>

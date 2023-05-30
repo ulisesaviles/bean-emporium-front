@@ -30,7 +30,7 @@ const createUser = async (
  * @returns A promise with the user object.
  */
 const getUser = async (userId: string): Promise<User | undefined> => {
-  const { user } = (await baseRequest("GET", `users/${userId}`)).data as {
+  const { user } = (await baseRequest("GET", `users/${userId}`, undefined, undefined, true)).data as {
     user: User | undefined;
   };
   return user;
@@ -42,7 +42,7 @@ const getUser = async (userId: string): Promise<User | undefined> => {
  * @returns A promise with the cart object.
  */
 const getUserCart = async (userId: string): Promise<Cart | undefined> => {
-  const { cart } = (await baseRequest("GET", `users/${userId}/cart`)).data as {
+  const { cart } = (await baseRequest("GET", `users/${userId}/cart`, undefined, undefined, true)).data as {
     cart: Cart | undefined;
   };
   return cart;
@@ -61,7 +61,7 @@ const updateUser = async (
   const { user } = (
     await baseRequest("PATCH", `users/${userId}`, undefined, {
       userData: newUserFields,
-    })
+    }, true)
   ).data as { user: User };
   return user;
 };
@@ -76,7 +76,7 @@ const updateUserCart = async (userId: string, newCart: Cart): Promise<Cart> => {
   const { cart } = (
     await baseRequest("PATCH", `users/${userId}/cart`, undefined, {
       newCart,
-    })
+    }, true)
   ).data as { cart: Cart };
   return cart;
 };
