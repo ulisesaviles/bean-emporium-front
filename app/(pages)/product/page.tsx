@@ -63,12 +63,13 @@ const Product = () => {
         variant: selectedVariant,
         name: product?.name,
         quantity,
-        total: getCurrentPriceRange(parseInt(quantity), selectedVariant!) * parseInt(quantity)
+        total:
+          getCurrentPriceRange(parseInt(quantity), selectedVariant!) *
+          parseInt(quantity),
       };
       const cart = await cartAPI.addProductToCart(selectedProduct!);
       setCartVisible(true);
-    }
-    catch(error) {
+    } catch (error) {
       setAuthVisible(true);
     }
   };
@@ -89,8 +90,7 @@ const Product = () => {
       setAuthVisible(false);
       await addToCart();
       setCartVisible(true);
-    }
-    catch(error) {
+    } catch (error) {
       console.log(error);
     }
   };
@@ -114,8 +114,15 @@ const Product = () => {
   // JSX
   return (
     <>
-      <ProductAddedModal visible={cartModal} onClose={() => setCartVisible(false)}></ProductAddedModal>
-      <AuthModal visible={authModal} onSuccessfulLogin={handleLogin} onFailedLogin={() => {}} />
+      <ProductAddedModal
+        visible={cartModal}
+        onClose={() => setCartVisible(false)}
+      ></ProductAddedModal>
+      <AuthModal
+        visible={authModal}
+        onSuccessfulLogin={handleLogin}
+        onFailedLogin={() => {}}
+      />
       <main className={styles.main}>
         <Header />
         <section
@@ -155,7 +162,7 @@ const Product = () => {
                       <Image
                         className={styles.variantImg}
                         alt={variant.name}
-                        src={selectedVariant?.imgUrl}
+                        src={variant.imgUrl}
                         width={10}
                         height={10}
                       />
