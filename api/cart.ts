@@ -1,5 +1,5 @@
 // Base API request
-import { Cart, Product } from "@/app/config/types";
+import { Cart, LC_KEYS, Product } from "@/app/config/types";
 import { baseRequest } from "./config";
 
 import { isLoggedIn } from "@/app/helpers/auth.helper";
@@ -32,8 +32,11 @@ const addProductToCart = async (product: any) => {
       let cart = await getCart();
   
       cart = [...cart, product];
+
       
       const user = await usersAPI.updateUser(userId, {cart});
+      localStorage.setItem(LC_KEYS.CART, JSON.stringify(cart));
+
       return user.cart;
     }
     else {
@@ -53,6 +56,9 @@ const updateCart = async(cart: Cart) => {
       const {userId, token} = res;
 
       const user = await usersAPI.updateUser(userId, {cart});
+
+      localStorage.setItem(LC_KEYS.CART, JSON.stringify(cart));
+
       return user.cart;
     }
   }

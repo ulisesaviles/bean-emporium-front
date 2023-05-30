@@ -10,6 +10,7 @@ export const login = async (email: string, password: string): Promise<{userId: s
 
     localStorage.setItem(LC_KEYS.USER_ID, userId);
     localStorage.setItem(LC_KEYS.SESSION_TOKEN, token);
+    localStorage.setItem(LC_KEYS.CART, JSON.stringify([]));
 
     return {userId, token};
   } catch (error) {

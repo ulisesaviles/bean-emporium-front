@@ -46,7 +46,7 @@ export type Order = {
   }[];
   timestamp: number;
   total: number;
-  cancelled: boolean;
+  cancelled?: boolean;
 };
 
 export type SignupForm = {

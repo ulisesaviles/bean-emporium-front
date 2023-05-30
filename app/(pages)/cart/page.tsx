@@ -98,7 +98,7 @@ const Cart = () => {
                 <div className={styles.left}>
                   <Image src={beans} alt="beans" className={styles.img} />
                   <div className={styles.information}>
-                    <p className={styles.name}>Coffee beans</p>
+                    <p className={styles.name}>{product.name}</p>
                     <p className={styles.variant}>Variant: {product.variant.name}</p>
                     <input type="number" value={product.quantity} className={styles.cartInput} onChange={(e) => handleChangeQuantity(e.target.value, index)}/>
                   </div>

@@ -61,6 +61,7 @@ const Product = () => {
       const selectedProduct = {
         productId: product?.id,
         variant: selectedVariant,
+        name: product?.name,
         quantity,
         total: getCurrentPriceRange(parseInt(quantity), selectedVariant!) * parseInt(quantity)
       };
