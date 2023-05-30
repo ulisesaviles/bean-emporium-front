@@ -45,11 +45,14 @@ const getProduct = async (productId: string): Promise<Product | undefined> => {
  */
 const getProducts = async (
   pageSize: number,
+  search: string,
   LastEvaluatedKey?: string
 ): Promise<{ products: Product[]; LastEvaluatedKey?: string }> => {
-  let params: { pageSize: string; LastEvaluatedKey?: string } = {
-    pageSize: pageSize.toString(),
-  };
+  let params: { pageSize: string; LastEvaluatedKey?: string; search?: string } =
+    {
+      pageSize: pageSize.toString(),
+    };
+  search !== "" ? (params.search = search) : null;
   LastEvaluatedKey ? (params.LastEvaluatedKey = LastEvaluatedKey) : null;
   const { products, LastEvaluatedKey: newLastEvaluatedKey } = (
     await baseRequest("GET", `products`, params)

@@ -26,6 +26,8 @@ import homeAsset from "../../../public/Assets/Home.jpg";
 // Components
 import Product from "@/app/components/product";
 import { useInput } from "@/app/components/input/input";
+import { Button } from "@/app/components/button/button";
+import DropDown from "@/app/components/dropDown";
 
 // Main react component
 const Home = () => {
@@ -36,6 +38,10 @@ const Home = () => {
   const [lastEvaluatedKey, setLastEvaluatedKey] = useState<
     string | undefined
   >();
+  const [lastEvaluatedKey_before, setLastEvaluatedKey_before] = useState<{
+    last: undefined | string;
+    beforeLast: undefined | string;
+  }>({ last: undefined, beforeLast: undefined });
   const [firstLoad, setFirstLoad] = useState(true);
   const [pageSize, setPageSize] = useState<5 | 10 | 20>(10);
   const [searchText, searchInput]: [string, JSX.Element] = useInput({
@@ -43,12 +49,27 @@ const Home = () => {
   });
 
   // Functions
-  const getData = async (lastEvaluatedKey?: string) => {
+  const getData = async (
+    search: string,
+    pageSize: number,
+    lastEvaluatedKey?: string
+  ) => {
     setFirstLoad(false);
+    setProducts(undefined);
+
+    // If pagination, save last 2 states
+    if (lastEvaluatedKey) {
+      let lastEvaluatedKey_before_ = { ...lastEvaluatedKey_before };
+      lastEvaluatedKey_before_.beforeLast = lastEvaluatedKey_before_.last;
+      lastEvaluatedKey_before_.last = lastEvaluatedKey;
+      setLastEvaluatedKey_before(lastEvaluatedKey_before_);
+    } else
+      setLastEvaluatedKey_before({ beforeLast: undefined, last: undefined });
 
     // Get products
     const productsResponse = await productsAPI.getProducts(
       pageSize,
+      search,
       lastEvaluatedKey
     );
 
@@ -59,8 +80,9 @@ const Home = () => {
 
   // On reload
   useEffect(() => {
-    if (firstLoad) getData(lastEvaluatedKey);
+    if (firstLoad) getData(searchText, pageSize, lastEvaluatedKey);
   }, [firstLoad, getData, lastEvaluatedKey]);
+  console.log(JSON.stringify(lastEvaluatedKey_before));
 
   // JSX
   return (
@@ -85,7 +107,27 @@ const Home = () => {
             sagittis vitae, ullamcorper eu nisi. Donec sed enim ante. Praesent
             porttitor odio ut lobortis consequat.{" "}
           </p>
-          <div style={{ width: "100%" }}>{searchInput}</div>
+          <div className={styles.inputAndBtnContainer}>
+            <div style={{ flex: 1 }}>{searchInput}</div>
+            <div style={{ marginLeft: 15 }}>
+              <Button
+                label="Search"
+                onClick={() => {
+                  getData(searchText, pageSize);
+                }}
+              />
+            </div>
+            <div style={{ marginLeft: 15 }}>
+              <DropDown
+                value={pageSize}
+                onChange={(value) => {
+                  setPageSize(value as 5 | 10 | 20);
+                  getData(searchText, value as number);
+                }}
+                options={[5, 10, 20]}
+              />
+            </div>
+          </div>
         </section>
         <section
           className={`${
@@ -105,6 +147,30 @@ const Home = () => {
                   <Product product={product} />
                 </Link>
               ))}
+        </section>
+        <section className={styles.paginationSection}>
+          {lastEvaluatedKey_before.last ? (
+            <div style={{ marginRight: 20 }}>
+              <Button
+                label={`Last ${pageSize}`}
+                onClick={() =>
+                  getData(
+                    searchText,
+                    pageSize,
+                    lastEvaluatedKey_before.beforeLast
+                  )
+                }
+              />
+            </div>
+          ) : null}
+          {products && lastEvaluatedKey ? (
+            <Button
+              label={`Next ${pageSize}`}
+              onClick={() => {
+                getData(searchText, pageSize, lastEvaluatedKey);
+              }}
+            />
+          ) : null}
         </section>
       </main>
     </>
