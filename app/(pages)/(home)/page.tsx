@@ -72,15 +72,20 @@ const Home = () => {
       setLastEvaluatedKey_before({ beforeLast: undefined, last: undefined });
 
     // Get products
-    const productsResponse = await productsAPI.getProducts(
-      pageSize,
-      search,
-      lastEvaluatedKey
-    );
+    try {
+      const productsResponse = await productsAPI.getProducts(
+        pageSize,
+        search,
+        lastEvaluatedKey
+      );
 
-    // Load data to state variables
-    setProducts(productsResponse.products);
-    setLastEvaluatedKey(productsResponse.LastEvaluatedKey);
+      // Load data to state variables
+      setProducts(productsResponse.products);
+      setLastEvaluatedKey(productsResponse.LastEvaluatedKey);
+    } catch (e) {
+      setProducts([]);
+      setLastEvaluatedKey(undefined);
+    }
   };
 
   // On reload
@@ -99,7 +104,9 @@ const Home = () => {
         <Header />
         <section className={styles.section1Container}>
           <Image src={homeAsset} alt="Coffee" className={styles.section1Img} />
-          <h1 className={styles.section1Slogan}>Un slogan bien vergas</h1>
+          <h1 className={styles.section1Slogan}>
+            Calidad en cada grano, al alcance de tu mano
+          </h1>
           <p className={styles.section1Description}>
             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc
             vestibulum ac nisl ut luctus. Aliquam risus massa, accumsan eget
@@ -141,6 +148,8 @@ const Home = () => {
             ? "Loading..."
             : products === null
             ? "Error;("
+            : products.length === 0
+            ? "No products match your search"
             : products.map((product) => (
                 <Link href={`/product?id=${product.id}`} key={product.id}>
                   <Product product={product} />
