@@ -1,0 +1,109 @@
+@import '../../styles/variables.scss';
+
+.main {
+  display: flex;
+  flex-direction: column;
+  padding: 0.5rem 1rem;
+  gap: 2rem;
+
+  .back {
+    font-size: 2rem;
+    cursor: pointer;
+  }
+
+  .placeholder {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-self: center;
+    gap: 1rem;
+    width: 100%;
+
+    .img {
+      width: 25vw;
+      height: 20vw;
+    }
+  }
+
+  .products {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+    .product {
+      width: calc(50% - 1rem);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      padding: 1rem;
+      box-shadow: $shadow-light;
+      border-radius: 1rem;
+  
+      .left {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: 1rem;
+        .img {
+          width: 4rem;
+          height: 4rem;
+        }
+    
+        .information {
+          display: flex;
+          flex-direction: column;
+          gap: 0.5rem;
+    
+          .name {
+            font-weight: 600;
+          }
+  
+          .variant {
+            font-size: 0.8rem;
+            color: $text;
+          }
+  
+          .cartInput {
+            width: 100%;
+            background-color: $contrast;
+            border: 0;
+            padding: 0.5rem 0.5rem;
+            border-radius: 10px;
+            font-size: 16px;
+  
+            &:focus {
+              border: 0;
+              outline: 2px solid $fade1;
+            }
+          }
+        }
+      }
+  
+      .cost {
+        font-size: 1.5rem;
+        font-weight: 600;
+      }
+  
+      .remove {
+        font-size: 2rem;
+        position: relative;
+        top: 0;
+        right: 0;
+        cursor: pointer;
+        color: $primary;
+      }
+    }
+  }
+
+  .footer {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: center;
+    width: 100%;
+    gap: 1rem;
+  }
+
+}

@@ -16,15 +16,18 @@ import { Cart, Product, ProductVariant } from "@/app/config/types";
 
 // Helpers
 import { productsAPI } from "@/api/products";
-import { usersAPI } from "@/api/users";
 import { sleep } from "@/helpers/timing";
 
 // Icons
-import { IoAdd, IoCart, IoRemove } from "react-icons/io5";
+import { IoAdd, IoCartOutline, IoRemove } from "react-icons/io5";
 
 // Components
 import { useInput } from "@/app/components/input/input";
 import { Button } from "@/app/components/button/button";
+import { cartAPI } from "@/api/cart";
+import { ProductAddedModal } from "@/app/components/productAddedModal/productAddedModal";
+import { AuthModal } from "@/app/components/authModal/authModal";
+import { getCurrentPriceRange } from "@/app/helpers/product.helper";
 
 // Get id from url
 const getId = (searchQuery: string): string | undefined => {
@@ -48,34 +51,24 @@ const Product = () => {
     type: "number",
     label: "Quantity (gr)",
   });
+  const [cartModal, setCartVisible] = useState(false);
+  const [authModal, setAuthVisible] = useState(false);
 
   // Functions
   const addToCart = async () => {
-    alert(`Added ${product!.name} to cart.`);
-    // // TODO: Get current cart and declare it here
-    // let currentCart:Cart = [];
-
-    // // Update current cart
-    // currentCart.push({productId: product!.id, quantity: parseInt(quantity)});
-
-    // // Upload updated cart
-    // await usersAPI.updateUserCart("<USER_ID>", currentCart);
-  };
-
-  const getCurrentPriceRange = (
-    quantity: number,
-    selectedVariant: ProductVariant
-  ) => {
-    for (let i = 0; i < selectedVariant?.priceRanges.length; i++) {
-      const priceRange = selectedVariant?.priceRanges[i];
-      if (
-        quantity >= priceRange.minQuantity &&
-        quantity <= priceRange.maxQuantity
-      )
-        return priceRange.price;
+    try {
+      const selectedProduct = {
+        productId: product?.id,
+        variant: selectedVariant,
+        quantity,
+        total: getCurrentPriceRange(parseInt(quantity), selectedVariant!) * parseInt(quantity)
+      };
+      const cart = await cartAPI.addProductToCart(selectedProduct!);
+      setCartVisible(true);
     }
-    return selectedVariant.priceRanges[selectedVariant.priceRanges.length - 1]
-      .price;
+    catch(error) {
+      setAuthVisible(true);
+    }
   };
 
   const handleFirstLoad = async (productId: string) => {
@@ -89,6 +82,17 @@ const Product = () => {
     setSelectedVariant(product.variants[0]);
   };
 
+  const handleLogin = async () => {
+    try {
+      setAuthVisible(false);
+      await addToCart();
+      setCartVisible(true);
+    }
+    catch(error) {
+      console.log(error);
+    }
+  };
+
   // On refresh
   useEffect(() => {
     const onRefresh = async () => {
@@ -96,7 +100,6 @@ const Product = () => {
 
       if (productId === undefined) {
         const id = getId(window.location.search);
-        console.log({ id });
         if (!id) {
           await sleep(10);
           setRefresher((() => refresher + 1)());
@@ -104,98 +107,102 @@ const Product = () => {
       }
     };
     onRefresh();
-  }, [productId, refresher]);
+  }, [productId, refresher, cartModal]);
 
   // JSX
   return (
-    <main className={styles.main}>
-      <header className={styles.header}>
-        <h3 className={styles.logo}>Bean Emporium</h3>
-        <IoCart className={styles.cart} onClick={() => {}} />
-      </header>
-      <section
-        className={
-          !productId || !product
-            ? styles.productSectionEmpty
-            : styles.productSection
-        }
-      >
-        {!productId || product === undefined || !selectedVariant ? (
-          "Loading..."
-        ) : product === null ? (
-          "Error while getting the product"
-        ) : (
-          <div className={styles.productSubContainer}>
-            <h1 className={styles.title}>{product.name}</h1>
-            <p className={styles.description}>{product.description}</p>
-            <div className={styles.imgSectionContainer}>
-              <Image
-                className={styles.mainImg}
-                alt={product.name}
-                src={selectedVariant?.imgUrl}
-                width={10}
-                height={10}
-              />
-              <div className={styles.variantsContainer}>
-                {product.variants.map((variant, i) => (
-                  <div
-                    key={i}
-                    onClick={() => setSelectedVariant(variant)}
-                    className={`${styles.variantContainer} ${
-                      variant.id === selectedVariant.id
-                        ? styles.selectedVariantContainer
-                        : ""
-                    }`}
-                  >
-                    <Image
-                      className={styles.variantImg}
-                      alt={variant.name}
-                      src={selectedVariant?.imgUrl}
-                      width={10}
-                      height={10}
-                    />
-                    <h6 className={styles.variantName}>{variant.name}</h6>
-                  </div>
+    <>
+      <ProductAddedModal visible={cartModal} onClose={() => setCartVisible(false)}></ProductAddedModal>
+      <AuthModal visible={authModal} onSuccessfulLogin={handleLogin} onFailedLogin={() => {}} />
+      <main className={styles.main}>
+        <header className={styles.header}>
+          <h3 className={styles.logo}>Bean Emporium</h3>
+          <IoCartOutline className={styles.cart} onClick={() => {}} />
+        </header>
+        <section
+          className={
+            !productId || !product
+              ? styles.productSectionEmpty
+              : styles.productSection
+          }
+        >
+          {!productId || product === undefined || !selectedVariant ? (
+            "Loading..."
+          ) : product === null ? (
+            "Error while getting the product"
+          ) : (
+            <div className={styles.productSubContainer}>
+              <h1 className={styles.title}>{product.name}</h1>
+              <p className={styles.description}>{product.description}</p>
+              <div className={styles.imgSectionContainer}>
+                <Image
+                  className={styles.mainImg}
+                  alt={product.name}
+                  src={selectedVariant?.imgUrl}
+                  width={10}
+                  height={10}
+                />
+                <div className={styles.variantsContainer}>
+                  {product.variants.map((variant, i) => (
+                    <div
+                      key={i}
+                      onClick={() => setSelectedVariant(variant)}
+                      className={`${styles.variantContainer} ${
+                        variant.id === selectedVariant.id
+                          ? styles.selectedVariantContainer
+                          : ""
+                      }`}
+                    >
+                      <Image
+                        className={styles.variantImg}
+                        alt={variant.name}
+                        src={selectedVariant?.imgUrl}
+                        width={10}
+                        height={10}
+                      />
+                      <h6 className={styles.variantName}>{variant.name}</h6>
+                    </div>
+                  ))}
+                </div>
+              </div>
+              <h2 className={styles.pricesLabel}>Prices:</h2>
+              <ul className={styles.priceRanges}>
+                {selectedVariant.priceRanges.map((priceRange, i) => (
+                  <li key={i} className={styles.priceRange}>
+                    <strong>
+                      {priceRange.minQuantity}gr - {priceRange.maxQuantity}gr:
+                    </strong>{" "}
+                    ${priceRange.price}/gr
+                  </li>
                 ))}
-              </div>
+              </ul>
+              <section className={styles.orderContainer}>
+                <h6 className={styles.orderTitle}>Order</h6>
+                {quantityInput}
+                <div className={styles.orderPriceSectionContainer}>
+                  <h3 className={styles.priceToPay}>Price to pay</h3>
+                  <p className={styles.orderPrice}>
+                    ${" "}
+                    {quantity === ""
+                      ? 0
+                      : (
+                          getCurrentPriceRange(
+                            parseInt(quantity),
+                            selectedVariant
+                          ) * parseInt(quantity)
+                        ).toLocaleString()}{" "}
+                    mxn
+                  </p>
+                </div>
+                <div className={styles.buttonContainer}>
+                  <Button label="Add to cart" onClick={addToCart} />
+                </div>
+              </section>
             </div>
-            <h2 className={styles.pricesLabel}>Prices:</h2>
-            <ul className={styles.priceRanges}>
-              {selectedVariant.priceRanges.map((priceRange, i) => (
-                <li key={i} className={styles.priceRange}>
-                  <strong>
-                    {priceRange.minQuantity}gr - {priceRange.maxQuantity}gr:
-                  </strong>{" "}
-                  ${priceRange.price}/gr
-                </li>
-              ))}
-            </ul>
-            <section className={styles.orderContainer}>
-              <h6 className={styles.orderTitle}>Order</h6>
-              {quantityInput}
-              <div className={styles.orderPriceSectionContainer}>
-                <h3 className={styles.priceToPay}>Price to pay</h3>
-                <p className={styles.orderPrice}>
-                  ${" "}
-                  {quantity === ""
-                    ? 0
-                    : (
-                        getCurrentPriceRange(
-                          parseInt(quantity),
-                          selectedVariant
-                        ) * parseInt(quantity)
-                      ).toLocaleString()}{" "}
-                  mxn
-                </p>
-              </div>
-              <div className={styles.buttonContainer}>
-                <Button label="Add to cart" onClick={addToCart} />
-              </div>
-            </section>
-          </div>
-        )}
-      </section>
-    </main>
+          )}
+        </section>
+      </main>
+    </>
   );
 };
 

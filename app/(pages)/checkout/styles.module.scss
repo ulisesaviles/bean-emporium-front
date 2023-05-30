@@ -4,4 +4,10 @@
   align-items: center;
   justify-content: center;
   height: 100vh;
+  gap: 1rem;
+
+  .img {
+    width: 30vw;
+    height: 20vw;
+  }
 }

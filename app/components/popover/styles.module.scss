@@ -1,0 +1,45 @@
+@import '../../styles/variables.scss';
+
+.popover {
+  position: absolute;
+  top: 0;
+  right: 0;
+  transform: translate(-70%, 65%);
+  padding: 1rem;
+  box-shadow: $shadow-strong;
+  border-radius: 0.8rem 0.3rem 0.8rem 0.8rem;
+  background: $background;
+
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+
+  z-index: 1000;
+
+  
+  .option {
+    border-bottom: 1px solid $fade1;
+    padding-bottom: 0.5rem;
+    cursor: pointer;
+
+    &:last-of-type {
+      border-bottom: none;
+      padding: 0;
+    }
+    &.logout {
+      p {
+        color: rgba($color: rgb(123, 54, 54), $alpha: 1.0);
+      }
+    }
+  }
+}
+
+.pane {
+  position: fixed;
+  z-index: 1;
+  width: 200vw;
+  height: 200vh;
+  background: rgba($color: black, $alpha: 0.1);
+  transform: translate(-85%, -10%);
+  cursor: pointer;
+}

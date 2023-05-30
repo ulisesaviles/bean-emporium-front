@@ -89,7 +89,7 @@ export const Signup = ({
 
   useEffect(() => {
     handleFormChange();
-  }, [form, name, email, password, confirmPassword, handleFormChange]);
+  }, [name, email, password, confirmPassword]);
 
   return (
     <div className={styles.signup}>

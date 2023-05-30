@@ -54,9 +54,10 @@ export type SignupForm = {
   email: string;
   password: string;
   confirmPassword: string;
-}
+};
 
 export enum LC_KEYS {
   USER_ID = 'userId',
-  SESSION_TOKEN = 'token'
-}
+  SESSION_TOKEN = 'token',
+  CART = 'cart',
+};

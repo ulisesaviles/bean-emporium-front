@@ -1,4 +1,4 @@
-import { SignupForm } from "../config/types";
+import { LC_KEYS, SignupForm } from "../config/types";
 
 const emailIsValid = (email: string) => {
   const emailRegex =
@@ -59,4 +59,15 @@ export const validateSignupForm = (form: SignupForm): string[] => {
   }
 
   return errors;
+}
+
+export const isLoggedIn = (): {userId: string, token: string} | undefined => {
+  const userId = localStorage.getItem(LC_KEYS.USER_ID);
+  const token = localStorage.getItem(LC_KEYS.SESSION_TOKEN);
+
+  if (!(userId && token)) {
+    return undefined;
+  }
+
+  return {userId, token};
 }

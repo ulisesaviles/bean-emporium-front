@@ -17,7 +17,8 @@ import { productsAPI } from "@/api/products";
 import { Product as ProductType } from "@/app/config/types";
 
 // Icons
-import { IoCart } from "react-icons/io5";
+import { IoCartOutline } from "react-icons/io5";
+import { RxAvatar } from "react-icons/rx";
 import Image from "next/image";
 
 // Assets
@@ -28,6 +29,9 @@ import Product from "@/app/components/product";
 import { useInput } from "@/app/components/input/input";
 import { Button } from "@/app/components/button/button";
 import DropDown from "@/app/components/dropDown";
+
+import { isLoggedIn } from "@/app/helpers/auth.helper";
+import { Popover } from "@/app/components/popover/popover";
 
 // Main react component
 const Home = () => {
@@ -47,6 +51,8 @@ const Home = () => {
   const [searchText, searchInput]: [string, JSX.Element] = useInput({
     placeholder: "Enter a product name...",
   });
+  const [logged, setLogged] = useState(false);
+  const [showPopover, setShowPopover] = useState(false);
 
   // Functions
   const getData = async (
@@ -76,13 +82,19 @@ const Home = () => {
     // Load data to state variables
     setProducts(productsResponse.products);
     setLastEvaluatedKey(productsResponse.LastEvaluatedKey);
+
+    if (isLoggedIn()) {
+      setLogged(true);
+    }
+    else {
+      setLogged(false);
+    }
   };
 
   // On reload
   useEffect(() => {
     if (firstLoad) getData(searchText, pageSize, lastEvaluatedKey);
-  }, [firstLoad, getData, lastEvaluatedKey]);
-  console.log(JSON.stringify(lastEvaluatedKey_before));
+  }, [firstLoad, getData, lastEvaluatedKey, logged, showPopover]);
 
   // JSX
   return (
@@ -94,9 +106,19 @@ const Home = () => {
       <main className={styles.main}>
         <header className={styles.header}>
           <h3 className={styles.logo}>Bean Emporium</h3>
-          <Link href={"cart"}>
-            <IoCart className={styles.cart} />
-          </Link>
+          <div style={{display: 'flex', gap: '2rem'}}>
+            <Link href={"cart"}>
+              <IoCartOutline className={styles.cart} />
+            </Link>
+            {
+              logged
+              &&
+              <>
+                <RxAvatar className={styles.cart} onClick={() => setShowPopover(true)} />
+                <Popover visible={showPopover} onClickLogout={getData} onClose={() => setShowPopover(false)}/>
+              </>
+            }
+          </div>
         </header>
         <section className={styles.section1Container}>
           <Image src={homeAsset} alt="Coffee" className={styles.section1Img} />

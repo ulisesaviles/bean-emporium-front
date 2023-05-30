@@ -5,7 +5,10 @@ import { Auth, Hub } from 'aws-amplify';
 import { Amplify } from 'aws-amplify';
 import { Login } from './login/login';
 import { Signup } from './signup/signup';
-import auth_img from '../../assets/img/auth_dialog.png';
+import auth_img from '../../../public/Assets/auth_dialog.png';
+import { EmailSent } from './emailSent/emailSent';
+import { User } from '@/app/config/types';
+import Image from 'next/image';
 
 interface ModalProps {
   visible: boolean;
@@ -16,7 +19,8 @@ interface ModalProps {
 enum MODAL_PAGES {
   DIALOG = 'dialog',
   LOGIN = 'login',
-  SIGNUP = 'signup'
+  SIGNUP = 'signup',
+  EMAIL_SENT = 'emailSent'
 }
 
 Amplify.configure({
@@ -37,11 +41,11 @@ Amplify.configure({
 
 export const AuthModal = ({visible = false, onSuccessfulLogin, onFailedLogin}: ModalProps) => {
   // const [show, setShow] = useState(visible);
-  const [currentPage, setCurrentPage]: [MODAL_PAGES, any] = useState(MODAL_PAGES.DIALOG)
+  const [currentPage, setCurrentPage]: [MODAL_PAGES, any] = useState(MODAL_PAGES.DIALOG);
+  const [email, setEmail] = useState('');
 
   useEffect(() => {
-    console.log(visible);
-  }, [visible, currentPage]);
+  }, [visible, currentPage, email]);
 
   const handleSuccess = (userId: string, token: string) => {
     if (onSuccessfulLogin) {
@@ -55,6 +59,11 @@ export const AuthModal = ({visible = false, onSuccessfulLogin, onFailedLogin}: M
     }
   }
 
+  const handleSuccesfulSignup = (user: User) => {
+    setCurrentPage(MODAL_PAGES.EMAIL_SENT);
+    setEmail(user.email);
+  }
+
   return(
     <>
       {
@@ -65,17 +74,21 @@ export const AuthModal = ({visible = false, onSuccessfulLogin, onFailedLogin}: M
             {
               currentPage === MODAL_PAGES.DIALOG
               ?
-              <>
-                {/* <img src={auth_img} className={styles.img} /> */}
+              <div className={styles.wrapper}>
+                <Image src={auth_img} alt='auth_image' className={styles.img}/>
                 <p>In order to get the tastiest coffee beans on the planet, you need to log in first </p>
                 <Button onClick={() => {setCurrentPage(MODAL_PAGES.LOGIN)}} label='Authenticate' />
-              </>
+              </div>
               :
               currentPage === MODAL_PAGES.LOGIN
               ?
               <Login onClickSignup={() => setCurrentPage(MODAL_PAGES.SIGNUP)} onSuccessfulLogin={handleSuccess} onFailLogin={handleFailed}/>
               :
-              <Signup onClickLogin={() => setCurrentPage(MODAL_PAGES.LOGIN)} onSuccessfulSignup={() => setCurrentPage(MODAL_PAGES.LOGIN)} onFailSignup={handleFailed}/>
+              currentPage === MODAL_PAGES.SIGNUP
+              ?
+              <Signup onClickLogin={() => setCurrentPage(MODAL_PAGES.LOGIN)} onSuccessfulSignup={handleSuccesfulSignup} onFailSignup={handleFailed}/>
+              :
+              <EmailSent email={email} onClickLogin={() => setCurrentPage(MODAL_PAGES.LOGIN)} />
             }
           </div>
           <div className={styles.overlay}></div>

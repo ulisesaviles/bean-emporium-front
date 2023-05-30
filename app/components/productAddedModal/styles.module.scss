@@ -26,13 +26,7 @@
   top: 0;
   background: $overlay;
   z-index: 10;
-}
-
-.img {
-  width: 25vw;
-  height: 20vw;
-  background-size: cover;
-  align-self: center;
+  cursor: pointer;
 }
 
 .wrapper {
