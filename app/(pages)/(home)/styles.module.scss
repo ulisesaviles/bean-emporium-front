@@ -8,31 +8,8 @@
   padding-top: 80px;
 }
 
-.header {
-  width: 100%;
-  display: flex;
-  flex-direction: row;
-  padding: 0 5vw;
-  justify-content: space-between;
-  align-items: center;
-  position: fixed;
-  height: 80px;
-  top: 0;
-  background-color: $background;
-  z-index: 2;
-}
-
-.logo {
-  font-size: 25px;
-}
-
-.cart {
-  font-size: 30px;
-  cursor: pointer;
-}
-
 .section1Container {
-  padding: 10vh 10vw;
+  padding: 5vw;
   min-height: 400px;
   display: flex;
   flex-direction: column;

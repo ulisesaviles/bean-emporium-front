@@ -1,0 +1,25 @@
+@import '../../styles/variables.scss';
+
+.header {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  padding: 3rem;
+  justify-content: space-between;
+  align-items: center;
+  position: fixed;
+  height: 80px;
+  top: 0;
+  background-color: $background;
+  z-index: 2;
+}
+
+.logo {
+  font-size: 25px;
+  cursor: pointer;
+}
+
+.cart {
+  font-size: 30px;
+  cursor: pointer;
+}

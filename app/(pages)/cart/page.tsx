@@ -14,6 +14,7 @@ import { Button } from "@/app/components/button/button";
 import { cartAPI } from "@/api/cart";
 import Link from "next/link";
 import { getCurrentPriceRange } from "@/app/helpers/product.helper";
+import { Header } from "@/app/components/header/header";
 
 // Main React component
 const Cart = () => {
@@ -22,13 +23,14 @@ const Cart = () => {
   const [userId, setUserId] = useState<string | null>();
   const [token, setToken] = useState<string | null>();
   const [products, setProducts]: [any[], any] = useState([]);
+  const [isLogged, setLogged] = useState(false);
 
   useEffect(() => {
     if (firstLoad) {
       setFirstLoad(false);
       handleFirstLoad();
     }
-  }, [firstLoad]);
+  }, [firstLoad, isLogged]);
 
   const handleFirstLoad = async () => {
     const userId = localStorage.getItem(LC_KEYS.USER_ID);
@@ -46,6 +48,7 @@ const Cart = () => {
 
   const handleLogin = async (userId: string, token: string) => {
     setVisible(false);
+    setLogged(true);
     setUserId(userId);
     setToken(token);
     const cart = await cartAPI.getCart();
@@ -77,6 +80,7 @@ const Cart = () => {
   return (
     <div className={styles.main}>
       <AuthModal visible={modalVisible} onSuccessfulLogin={handleLogin} />
+      <Header isLogged={isLogged}/>
       <div>
         <Link href=''>
           <BiArrowBack className={styles.back}/>

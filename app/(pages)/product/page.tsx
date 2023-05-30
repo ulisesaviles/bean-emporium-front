@@ -28,6 +28,7 @@ import { cartAPI } from "@/api/cart";
 import { ProductAddedModal } from "@/app/components/productAddedModal/productAddedModal";
 import { AuthModal } from "@/app/components/authModal/authModal";
 import { getCurrentPriceRange } from "@/app/helpers/product.helper";
+import { Header } from "@/app/components/header/header";
 
 // Get id from url
 const getId = (searchQuery: string): string | undefined => {
@@ -115,10 +116,7 @@ const Product = () => {
       <ProductAddedModal visible={cartModal} onClose={() => setCartVisible(false)}></ProductAddedModal>
       <AuthModal visible={authModal} onSuccessfulLogin={handleLogin} onFailedLogin={() => {}} />
       <main className={styles.main}>
-        <header className={styles.header}>
-          <h3 className={styles.logo}>Bean Emporium</h3>
-          <IoCartOutline className={styles.cart} onClick={() => {}} />
-        </header>
+        <Header />
         <section
           className={
             !productId || !product

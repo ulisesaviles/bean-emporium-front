@@ -32,6 +32,7 @@ import DropDown from "@/app/components/dropDown";
 
 import { isLoggedIn } from "@/app/helpers/auth.helper";
 import { Popover } from "@/app/components/popover/popover";
+import { Header } from "@/app/components/header/header";
 
 // Main react component
 const Home = () => {
@@ -51,8 +52,6 @@ const Home = () => {
   const [searchText, searchInput]: [string, JSX.Element] = useInput({
     placeholder: "Enter a product name...",
   });
-  const [logged, setLogged] = useState(false);
-  const [showPopover, setShowPopover] = useState(false);
 
   // Functions
   const getData = async (
@@ -82,19 +81,12 @@ const Home = () => {
     // Load data to state variables
     setProducts(productsResponse.products);
     setLastEvaluatedKey(productsResponse.LastEvaluatedKey);
-
-    if (isLoggedIn()) {
-      setLogged(true);
-    }
-    else {
-      setLogged(false);
-    }
   };
 
   // On reload
   useEffect(() => {
     if (firstLoad) getData(searchText, pageSize, lastEvaluatedKey);
-  }, [firstLoad, getData, lastEvaluatedKey, logged, showPopover]);
+  }, [firstLoad, getData, lastEvaluatedKey]);
 
   // JSX
   return (
@@ -104,22 +96,7 @@ const Home = () => {
         <meta name="description" content="bean emporium" />
       </Head>
       <main className={styles.main}>
-        <header className={styles.header}>
-          <h3 className={styles.logo}>Bean Emporium</h3>
-          <div style={{display: 'flex', gap: '2rem'}}>
-            <Link href={"cart"}>
-              <IoCartOutline className={styles.cart} />
-            </Link>
-            {
-              logged
-              &&
-              <>
-                <RxAvatar className={styles.cart} onClick={() => setShowPopover(true)} />
-                <Popover visible={showPopover} onClickLogout={getData} onClose={() => setShowPopover(false)}/>
-              </>
-            }
-          </div>
-        </header>
+        <Header />
         <section className={styles.section1Container}>
           <Image src={homeAsset} alt="Coffee" className={styles.section1Img} />
           <h1 className={styles.section1Slogan}>Un slogan bien vergas</h1>

@@ -41,9 +41,11 @@ export const Popover = ({visible = false, onClickLogout, onClose}: PopoverProps)
                 <p>My orders</p>
               </div>
             </Link>
-            <div className={`${styles.option} ${styles.logout}`} onClick={handleLogout}>
-              <p>Logout</p>
-            </div>
+            <Link href=''>
+              <div className={`${styles.option} ${styles.logout}`} onClick={handleLogout}>
+                <p>Logout</p>
+              </div>
+            </Link>
           </div>
           <div className={styles.pane} onClick={handleClose}></div>
         </>
